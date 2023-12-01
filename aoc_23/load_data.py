@@ -18,7 +18,7 @@ def get_data(day):
         print('loading existing file')
         with open(f'real_data/{day}.txt') as f:
             raw_data = f.read()
-    else: 
+    else:
         # does the fancy cookie method of getting data if .env file with SESSION cookie is available
         if os.path.isfile('.env'):
             print('getting file')
