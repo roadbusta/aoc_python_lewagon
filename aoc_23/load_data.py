@@ -29,6 +29,7 @@ def get_data(day):
                 f.write(raw_data)
         else:
             print('data file not found')
+            raw_data = None
     return raw_data
 
 def get_test_data(day):
