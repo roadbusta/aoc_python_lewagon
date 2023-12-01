@@ -33,6 +33,59 @@ def sum_cal_num(raw_list: list) -> int:
 
     return sum(calibration_value) # Return summed list
 
+def true_cal_num(cal_str: str) -> str:
+    """ Takes in a calibration string, and returns the entire number
+    """
+    search_list = ['zero', 'one', 'two','three', 'four', 'five', 'six', 'seven',
+                   'eight', 'nine','0','1','2','3','4','5','6','7','8','9']
+    # Number dictionary
+    num_dict = {
+    'zero':'0',
+    'one':'1',
+    'two':'2',
+    'three':'3',
+    'four':'4',
+    'five':'5',
+    'six':'6',
+    'seven':'7',
+    'eight':'8',
+    'nine':'9'
+    }
+    # Create an empty search dictionary
+    search_dict = {}
+    for test_sub in search_list:
+        res = [i for i in range(len(cal_str)) if cal_str.startswith(test_sub, i)]
+        search_dict[test_sub] = res
+
+
+    # clean the dictionary
+    clean_dict = dict(search_dict)
+    for key, value in search_dict.items():
+        if len(value)==0:
+            clean_dict.pop(key)
+
+    # invert the dictionary
+    inv_dict = {}
+    for key, value in clean_dict.items():
+        for v in value:
+            if key in num_dict.keys():
+                key = num_dict[key]
+
+            inv_dict[v] = key
+
+    # Sort the dictionary
+    sorted_dict = {k: v for k, v in sorted(inv_dict.items(), key=lambda item: item[0])}
+
+    # Extract numbers into a list
+    number_list = [v for k,v in sorted_dict.items()]
+
+    #Join to a string and strip
+    number_string = "".join(number_list).strip()
+
+    return number_string
+
+
+
 
 def part_1(data: str) -> int:
     """ In each line, remove all the letters to leave behind the numbers.
@@ -48,19 +101,6 @@ def part_2(data: str) ->int:
     """ Takes in a data string and converts digits represented as words into
     numbers before then generating the calibration numbers and summing them
     """
-    # Number dictionary
-    num_dict = {
-    'zero':'0',
-    'one':'1',
-    'two':'2',
-    'three':'3',
-    'four':'4',
-    'five':'5',
-    'six':'6',
-    'seven':'7',
-    'eight':'8',
-    'nine':'9'
-    }
 
     # strip, lower then split data into vector/list of numbers
     raw_list = data.strip().lower().split('\n')
@@ -68,15 +108,7 @@ def part_2(data: str) ->int:
     # Create an empty converted list
     converted_list = []
     for item in raw_list:
-        new_item = '' # Create a new item as an empty string
-        for character in item:
-            new_item += character # Add the new character to the string
-             # replace letters with numbers if applicable
-            for key, value in num_dict.items():
-                new_item = new_item.replace(key, value)
-
-        converted_list.append(new_item.strip())
-
+        converted_list.append(true_cal_num(item))
 
     return sum_cal_num(converted_list) # Generate calibrated numbers and sum
 
@@ -87,9 +119,12 @@ print(f'part 1 solution = {part_1(real_data)}')
 print(f'part 2 solution = {part_2(real_data)}')
 
 if __name__ == "__main__":
-    data_1 = get_test_data(1)
-    part_1(data_1)
+    # data_1 = get_test_data(1)
+    # part_1(data_1)
 
 
-    data_2 = get_test_data('1-2')
-    part_2(data_2)
+    # data_2 = get_test_data('1-2')
+    # part_2(data_2)
+
+    # print(true_cal_num('two1ninetwo'))
+    pass
