@@ -114,11 +114,16 @@ def part_2(data: str) ->int:
 
 
 ## Uncomment the lines below when your function passes the test!
-real_data = get_data(day)
-print(f'part 1 solution = {part_1(real_data)}')
-print(f'part 2 solution = {part_2(real_data)}')
+# real_data = get_data(day)
+# print(f'part 1 solution = {part_1(real_data)}')
+# print(f'part 2 solution = {part_2(real_data)}')
 
 if __name__ == "__main__":
+
+    ## Uncomment the lines below when your function passes the test!
+    real_data = get_data(day)
+    print(f'part 1 solution = {part_1(real_data)}')
+    print(f'part 2 solution = {part_2(real_data)}')
     # data_1 = get_test_data(1)
     # part_1(data_1)
 
@@ -126,5 +131,4 @@ if __name__ == "__main__":
     # data_2 = get_test_data('1-2')
     # part_2(data_2)
 
-    # print(true_cal_num('two1ninetwo'))
     pass
