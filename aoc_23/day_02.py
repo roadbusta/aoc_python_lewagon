@@ -34,8 +34,10 @@ def game_dictionary(data: str) -> dict:
     return game_dict
 
 def part_1(real_data: str) -> int:
-    """Takes in the game dictionary and the colour limits, and returns...
+    """Takes in the game dictionary and the colour limits, and returns the sum
+    of the IDs of the games with valid sub games
     """
+    # Set the limits of the number of colours
     limits = {'red' : 12,
               'green' : 13,
               'blue' : 14}
@@ -54,10 +56,28 @@ def part_1(real_data: str) -> int:
 
     return sum(valid_games)
 
+def part_2(data: str) ->int:
+    # Create a game dictionary
+    game_dict = game_dictionary(data)
 
+    # Create an empty power dictionary
+    power_dict = {}
+    for game_id, game_list in game_dict.items():
+        max_colour_dict = {'red' : 0, 'green' : 0, 'blue' : 0} # Set the max colour values
 
-# def part_2(data: str) ->int:
-#     pass
+        for game in game_list: # For each game
+
+            for colour, count in game.items(): # Check each colour count
+                if count > max_colour_dict[colour]: # If the colour count is greater than the min
+                    max_colour_dict[colour]= count  # Update the colour count
+
+        power_value = 1
+        for max_colour, max_count in max_colour_dict.items():
+            power_value = power_value * max_count # Calculate the power value for a given game
+
+        power_dict[game_id] = power_value # Generate a power dictionary with all the values
+
+    return sum(power_dict.values()) # Return the sume of the values
 
 
 ## Uncomment the lines below when your function passes the test!
@@ -69,7 +89,8 @@ def part_1(real_data: str) -> int:
 if __name__ == "__main__":
 
     # ## Uncomment the lines below when your function passes the test!
-    # real_data = get_test_data(day)
+    real_data = get_test_data(day)
     # print(part_1(real_data))
+    part_2(real_data)
 
     pass
