@@ -33,9 +33,13 @@ def game_dictionary(data: str) -> dict:
 
     return game_dict
 
-def part_1(game_dict: dict, limits:dict) -> int:
+def part_1(real_data: str) -> int:
     """Takes in the game dictionary and the colour limits, and returns...
     """
+    limits = {'red' : 12,
+              'green' : 13,
+              'blue' : 14}
+    game_dict = game_dictionary(real_data)
     valid_games = [] # Create an empty games list
     for game_id, game_list in game_dict.items(): # Iterate through the games list
         game_valid = True # Set the default value to be false
@@ -57,21 +61,15 @@ def part_1(game_dict: dict, limits:dict) -> int:
 
 
 ## Uncomment the lines below when your function passes the test!
-real_data = get_data(day)
-game_dict = game_dictionary(real_data)
-limits = {'red' : 12,
-              'green' : 13,
-              'blue' : 14}
-print(f'part 1 solution = {part_1(game_dict, limits)}')
+# real_data = get_data(day)
+
+# print(f'part 1 solution = {part_1(real_data)}')
 # print(f'part 2 solution = {part_2(real_data)}')
 
 if __name__ == "__main__":
 
     # ## Uncomment the lines below when your function passes the test!
-    # game_dict = game_dictionary(get_test_data(2))
-    # limits = {'red' : 12,
-    #           'green' : 13,
-    #           'blue' : 14}
-    # print(part_1(game_dict, limits))
+    # real_data = get_test_data(day)
+    # print(part_1(real_data))
 
     pass
