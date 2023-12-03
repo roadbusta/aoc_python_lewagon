@@ -8,6 +8,10 @@ day = 3
 # Write a function that identifies a group of numbers, and returns the surrounding array positions
 # Write a function that checks around the number for another symbol
 
+# Write tests
+# Identify which ones are gears
+# Identify the full number for the gear
+
 def str_to_array(data: str) -> np.ndarray:
     """ Takes in the data as a multiline string and returns it as an nd.array
     with every element inside a 2D arrays
@@ -52,6 +56,18 @@ def find_valid_adj(machine_array,i,j):
 
     return valid_adj
 
+def find_valid_num(machine_array,valid_array,i,j):
+    shape = machine_array.shape
+    valid_num = False
+    for b in [-1,1]:
+        alpha = i
+        beta = j+b
+        if beta >-1 and beta < shape[1]:
+            check_char = valid_array[alpha,beta]
+            if check_char.isdigit():
+                valid_num = True
+    return valid_num
+
 def valid_array(machine_array: np.ndarray) -> np.ndarray:
     """
     Takes in the machine as an array and returns a validated array where a 1
@@ -71,40 +87,84 @@ def valid_array(machine_array: np.ndarray) -> np.ndarray:
 
     return valid_array
 
-def valid_number_group():
-    pass
+def valid_number_group(machine_array: np.ndarray, valid_array: np.ndarray) -> np.ndarray:
+    for i in range(len(machine_array)): # For each row
+        for j in range(len(machine_array[i])): # For each item in the row
+            # Check if it is a number
+            char = str(machine_array[i,j]) # Look at the character
+            if char.isdigit(): # If it's a digit
+                if find_valid_num(machine_array, valid_array,i,j):
+                    valid_array[i,j] = machine_array[i,j]
+    return valid_array
 
+def find_true_array_len(input_array: np.ndarray):
+    flat_list = list(chain.from_iterable(input_array))
+    final_list = [i for i in flat_list if i!= ',']
+    return len(final_list)
+
+def valid_number_group_iter(machine_array: np.ndarray, valid_array: np.ndarray) -> np.ndarray:
+    count_delta = 1
+    while count_delta !=0:
+        count_0 = find_true_array_len(valid_array)
+        valid_array = valid_number_group(machine_array, valid_array)
+        count_1 = find_true_array_len(valid_array)
+        count_delta = count_1-count_0
+
+    return valid_array
 
 
 
 def part_1(data: str) -> int:
-    pass
+    machine_array = str_to_array(data)
+    # print(machine_array)
+    # num_position_list = num_position(machine_array)
+    validated_array = valid_array(machine_array)
+    # print(validated_array)
+    # validated_array_2 = valid_number_group(machine_array, validated_array)
+    # print(validated_array_2)
+    # validated_array_3 = valid_number_group(machine_array, validated_array_2)
+    # print(validated_array_3)
+    final_array = valid_number_group_iter(machine_array,validated_array)
+
+    flatten_list = list(chain.from_iterable(final_array))
+    long_string = "".join(flatten_list).split(',')
+    final_list = [int(i) for i in long_string if i]
+
+    return sum(final_list)
 
 def part_2(data: str) ->int:
     pass
 
 
-## Uncomment the lines below when your function passes the test!
-# real_data = get_data(day)
-
-# print(f'part 1 solution = {part_1(real_data)}')
-# print(f'part 2 solution = {part_2(real_data)}')
-
 if __name__ == "__main__":
 
     # ## Uncomment the lines below when your function passes the test!
-    data = get_test_data(day)
-    machine_array = str_to_array(data)
-    print(machine_array)
-    num_position_list = num_position(machine_array)
-    validated_array = valid_array(machine_array)
-    print(validated_array)
-    flatten_list = list(chain.from_iterable(validated_array))
-    long_string = "".join(flatten_list).split(',')
-    final_list = [i for i in long_string if i]
-    print(final_list)
+    # data = get_test_data(day)
+    # machine_array = str_to_array(data)
+    # # print(machine_array)
+    # # num_position_list = num_position(machine_array)
+    # validated_array = valid_array(machine_array)
+    # # print(validated_array)
+    # # validated_array_2 = valid_number_group(machine_array, validated_array)
+    # # print(validated_array_2)
+    # # validated_array_3 = valid_number_group(machine_array, validated_array_2)
+    # # print(validated_array_3)
+    # final_array = valid_number_group_iter(machine_array,validated_array)
+
+    # flatten_list = list(chain.from_iterable(final_array))
+    # long_string = "".join(flatten_list).split(',')
+    # final_list = [int(i) for i in long_string if i]
+    # print(final_list)
+    # print(sum(final_list))
     # num_group(num_position_list)
     # part_1(real_data)
     # part_2(real_data)
+    # print(part_1(data))
+
+    ## Uncomment the lines below when your function passes the test!
+    real_data = get_data(day)
+
+    print(f'part 1 solution = {part_1(real_data)}')
+    # print(f'part 2 solution = {part_2(real_data)}')
 
     pass
