@@ -37,7 +37,9 @@ def find_valid_adj(i,j):
     """
     Does a search around i and j and returns True if found
     """
-    pass
+    valid_adj = False
+
+    return valid_adj
 
 def valid_array(machine_array: np.ndarray) -> np.ndarray:
     """
