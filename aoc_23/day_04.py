@@ -103,13 +103,38 @@ def _points_dict(card_dict: dict) -> dict:
 
     return points_dict
 
-def _win_count_dict(points_dict:dict) -> dict:
+def _win_count_dict(card_dict:dict) -> dict:
+    points_dict = {}
+    for card, card_info in card_dict.items():
+        win_count = 0
+        winning_numbers = card_info[0]
+        my_numbers = card_info[1]
+
+        for my_number in my_numbers:
+            if my_number in winning_numbers:
+                win_count +=1
+
+        points_dict[card] = win_count
+
     win_count_dict = {}
     # Instantiate win dict
     for card, points in points_dict.items():
-        win_count_dict[card] = [points, 1]
+        win_count_dict[card] = {'points' : points,
+                                'copies' : 1}
 
-    pass
+    # Create updated win_count_dict
+    for card, info in win_count_dict.items():
+        points = info['points']
+        copies = info['copies']
+        if points:
+            for i in range(points):
+                card_to_copy = str(int(card)+i+1)
+                if card_to_copy in win_count_dict.keys():
+                    win_count_dict[card_to_copy]['copies'] += copies
+
+    return win_count_dict
+
+
 
 
 def part_1(data:str) ->int:
@@ -132,7 +157,7 @@ if __name__ == "__main__":
     # print(f'part 1 solution = {part_1(real_data)}')
     card_dict = _card_dict(data)
     points_dict =_points_dict(card_dict)
-    _win_count_dict(points_dict)
+    _win_count_dict(card_dict)
     # print(f'part 2 solution = {part_2(real_data)}')
 
 

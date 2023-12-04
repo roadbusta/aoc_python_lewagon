@@ -33,15 +33,14 @@ def test_part_1():
 
 
 # def test_part_2():
-    win_count_dict = _win_count_dict(points_dict)
+    win_count_dict = _win_count_dict(card_dict)
 
     assert type(win_count_dict) == dict
     assert len(win_count_dict['1']) == 2
-    assert type(win_count_dict['1'][0]) == int
-    assert win_count_dict['1'][0] >= 0
-    assert type(win_count_dict['1'][1]) == int
-    assert win_count_dict['1'][1] >= 0
-
+    assert type(win_count_dict['1']['points']) == int
+    assert win_count_dict['1']['points'] >= 0
+    assert type(win_count_dict['1']['copies']) == int
+    assert win_count_dict['1']['copies'] >= 0
 
 
 #     assert type(day_02.game_dictionary(test_data))== dict
