@@ -348,6 +348,7 @@ if __name__ == "__main__":
     ## Uncomment the lines below when your function passes the test!
     data = get_test_data(day)
     machine_array = str_to_array(data)
+    num_position(machine_array)
     # print(f'part 1 solution = {part_1(real_data)}')
     # print(f'part 2 solution = {part_2(real_data)}')
 
