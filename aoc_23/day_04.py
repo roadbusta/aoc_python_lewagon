@@ -154,16 +154,14 @@ def part_2(data:str) ->int:
     return sum(win_count_list)
 
 
-
-
 if __name__ == "__main__":
 
     ## Uncomment the lines below when your function passes the test!
-    data = get_test_data(day)
-    # real_data = get_data(day)
-    # print(f'part 1 solution = {part_1(real_data)}')
+    # data = get_test_data(day)
+    real_data = get_data(day)
+    print(f'part 1 solution = {part_1(real_data)}')
 
-    # print(f'part 2 solution = {part_2(data)}')
+    print(f'part 2 solution = {part_2(real_data)}')
 
 
     pass
