@@ -1,4 +1,4 @@
-from aoc_23.day_04 import _card_dict, _positive_int, _points_dict, part_1, _win_count_dict
+from aoc_23.day_04 import _card_dict, _positive_int, _points_dict, part_1, _win_count_dict, part_2
 from aoc_23.load_data import get_test_data
 import numpy as np
 
@@ -32,16 +32,13 @@ def test_part_1():
     assert part_1(test_data) == expected_result_part_1
 
 
-# def test_part_2():
+def test_part_2():
+    card_dict = _card_dict(test_data)
     win_count_dict = _win_count_dict(card_dict)
-
     assert type(win_count_dict) == dict
     assert len(win_count_dict['1']) == 2
     assert type(win_count_dict['1']['points']) == int
     assert win_count_dict['1']['points'] >= 0
     assert type(win_count_dict['1']['copies']) == int
     assert win_count_dict['1']['copies'] >= 0
-
-
-#     assert type(day_02.game_dictionary(test_data))== dict
-#     assert day_02.part_2(test_data) == expected_result_part_2
+    assert part_2(test_data) == expected_result_part_2

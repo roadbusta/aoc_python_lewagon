@@ -145,8 +145,15 @@ def part_1(data:str) ->int:
     points_dict=_points_dict(card_dict)
     return sum(points_dict.values())
 
-def part_2():
-    pass
+def part_2(data:str) ->int:
+    """Takes in raw data and returns number of scratch cards"""
+    card_dict = _card_dict(data)
+    win_count_dict =  _win_count_dict(card_dict)
+    win_count_list = [value['copies'] for key, value in win_count_dict.items()]
+
+    return sum(win_count_list)
+
+
 
 
 if __name__ == "__main__":
@@ -155,10 +162,8 @@ if __name__ == "__main__":
     data = get_test_data(day)
     # real_data = get_data(day)
     # print(f'part 1 solution = {part_1(real_data)}')
-    card_dict = _card_dict(data)
-    points_dict =_points_dict(card_dict)
-    _win_count_dict(card_dict)
-    # print(f'part 2 solution = {part_2(real_data)}')
+
+    # print(f'part 2 solution = {part_2(data)}')
 
 
     pass
