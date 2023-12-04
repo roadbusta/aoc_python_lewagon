@@ -3,8 +3,7 @@ import re
 import numpy as np
 from itertools import chain
 day = 4
-"""
-Part 1 Pseudo Code:
+"""Part 1 Pseudo Code:
 1. Take in each line, and create a dictionary for each card. The dictionary key
 is the Card number, and the dictionary value is a list of two lists. The first
 list is the list of winning numbers, the second list is the list of my numbers
@@ -26,6 +25,16 @@ exception for 0. This is the point value of the card.
 4. Sum the cards.
     Tests:
     - Sum is a positive integer
+"""
+
+"""Part 2 Pseudo Code:
+1. Create a dictionary with the win count per ID, as well as number of
+copies. Something like this:
+{
+    <id> : [<win_count>, <num_copies=1>]...
+}
+2. For each card, look at the win count. Then for each win, take the number of
+copies, and add it to the respective cards number of copies
 """
 def _positive_int(input_list: list) -> bool:
     """ A simple function that can be used to check if items in the list are positive intiger
@@ -94,6 +103,13 @@ def _points_dict(card_dict: dict) -> dict:
 
     return points_dict
 
+def _win_count_dict(points_dict:dict) -> dict:
+    win_count_dict = {}
+    # Instantiate win dict
+    for card, points in points_dict.items():
+        win_count_dict[card] = [points, 1]
+
+    pass
 
 
 def part_1(data:str) ->int:
@@ -102,7 +118,7 @@ def part_1(data:str) ->int:
     """
     card_dict = _card_dict(data)
     points_dict=_points_dict(card_dict)
-    pass
+    return sum(points_dict.values())
 
 def part_2():
     pass
@@ -112,9 +128,11 @@ if __name__ == "__main__":
 
     ## Uncomment the lines below when your function passes the test!
     data = get_test_data(day)
-    card_dict = _card_dict(data)
-    _points_dict(card_dict)
+    # real_data = get_data(day)
     # print(f'part 1 solution = {part_1(real_data)}')
+    card_dict = _card_dict(data)
+    points_dict =_points_dict(card_dict)
+    _win_count_dict(points_dict)
     # print(f'part 2 solution = {part_2(real_data)}')
 
 
