@@ -15,7 +15,7 @@ light_temp = parsed_data['light-to-temperature']
 temp_humid = parsed_data['temperature-to-humidity']
 humid_loc = parsed_data['humidity-to-location']
 expected_result_part_1 = 35
-expected_result_part_2 = None
+expected_result_part_2 = 46
 
 
 def test_part_1():

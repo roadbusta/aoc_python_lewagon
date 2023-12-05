@@ -16,6 +16,11 @@ would be a list, everything else would be dictionaries
 Use the tables to find the maps for the inputs
 """
 
+"""Part 2 Pseudo code:
+Similar to part 1, but the initial seed list is longer.
+Update _parse_source_data to include an argument to expand seed list
+"""
+
 def _positive_int(input_list: list) -> bool:
     """ A simple function that can be used to check if items in the list are positive intiger
     """
@@ -29,7 +34,7 @@ def _positive_int(input_list: list) -> bool:
 
     return output
 
-def _parse_source_data(data: str) -> dict:
+def _parse_source_data(data: str, expand_seeds = False) -> dict:
     """ Takes in the raw data and convert this into dictionaries within
     dictionaries with the following structure:
     {
@@ -44,7 +49,10 @@ def _parse_source_data(data: str) -> dict:
     raw_list = data.strip().split('\n\n')
 
     # Get the seed info
-    parsed_dict['seeds'] = [int(i) for i in raw_list[0].split(':')[1].strip().split()]
+    if expand_seeds:
+        pass
+    else:
+        parsed_dict['seeds'] = [int(i) for i in raw_list[0].split(':')[1].strip().split()]
 
     for item in raw_list[1:]:
         split_item =item.strip().split(' map:')
