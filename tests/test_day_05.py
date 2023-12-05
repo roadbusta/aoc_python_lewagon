@@ -1,10 +1,11 @@
-from aoc_23.day_05 import _parse_source_data, _positive_int, _destination, part_1
+from aoc_23.day_05 import _parse_source_data, _positive_int, _destination, part_1, _split_list
 from aoc_23.load_data import get_test_data
 import numpy as np
 
 
 test_data = get_test_data(5)
 parsed_data = _parse_source_data(test_data)
+test_split_list = _split_list([2,3,3,6,4,8,5,10], 2)
 test_mapping_dict =[ {'dest' : 50, 'source' : 98, 'range_len' : 2}]
 seeds = parsed_data['seeds']
 seed_soil = parsed_data['seed-to-soil']
@@ -38,6 +39,7 @@ def test_part_1():
 
     assert type(part_1(test_data)) == int
     assert part_1(test_data) == expected_result_part_1
+
 
 
 

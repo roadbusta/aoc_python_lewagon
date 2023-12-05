@@ -1,7 +1,7 @@
 from load_data import get_data,get_test_data
 import re
 import numpy as np
-from itertools import chain
+from itertools import groupby
 day = 5
 
 """ Part 1 Pseudo code
@@ -34,6 +34,20 @@ def _positive_int(input_list: list) -> bool:
 
     return output
 
+def _split_list(input_list: list, part_size:int) -> list:
+    """Take in inputlist and part size, and return list of lists with evenly
+    sided parts
+    """
+    # Use the range() function to create a list of the desired indices
+    indices = range(0, len(input_list), part_size)
+
+    # Use the enumerate() function to create pairs of (index, element) for each element in the list
+    pairs = enumerate(input_list)
+
+    # Use the zip() function to group the pairs of (index, element) by index
+    return [list(group) for index, group in groupby(pairs, lambda x: x[0] // part_size)]
+
+
 def _parse_source_data(data: str, expand_seeds = False) -> dict:
     """ Takes in the raw data and convert this into dictionaries within
     dictionaries with the following structure:
@@ -49,10 +63,13 @@ def _parse_source_data(data: str, expand_seeds = False) -> dict:
     raw_list = data.strip().split('\n\n')
 
     # Get the seed info
+    initial_seed_list = [int(i) for i in raw_list[0].split(':')[1].strip().split()]
+
     if expand_seeds:
+
         pass
     else:
-        parsed_dict['seeds'] = [int(i) for i in raw_list[0].split(':')[1].strip().split()]
+        parsed_dict['seeds'] = initial_seed_list
 
     for item in raw_list[1:]:
         split_item =item.strip().split(' map:')
@@ -122,14 +139,15 @@ def part_2():
 
 if __name__ == "__main__":
 
-    ## Uncomment the lines below when your function passes the test!
-    # data = get_test_data(day)
+    data = get_test_data(day)
     real_data = get_data(day)
-    # parsed_data = _parse_source_data(data)
+    parsed_data = _parse_source_data(data)
     # test_mapping_dict = [{'dest' : 50, 'source' : 98, 'range_len' : 2}]
     # _destination(99, test_mapping_dict)
 
-    print(f'part 1 solution = {part_1(real_data)}')
+    ## Uncomment the lines below when your function passes the test!
+    real_data = get_data(day)
+    # print(f'part 1 solution = {part_1(real_data)}')
     # print(f'part 2 solution = {part_2(real_data)}')
 
 

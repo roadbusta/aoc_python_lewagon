@@ -13,12 +13,14 @@ expected_result_part_2 = 30
 
 def check_test_data():
     assert type(test_data) == str
+    pass
 
 
 def check_positive_int():
     assert _positive_int([0,1,2]) == True
     assert _positive_int([-1,1,2]) == False
     assert _positive_int(['a', 1,2 ]) == False
+    pass
 
 def check_card_dict():
     assert type(card_dict) == dict # Dictionary output
@@ -27,15 +29,18 @@ def check_card_dict():
     assert _positive_int(card_dict['1'][0]) == True # Positive integers including zero
     assert _positive_int(card_dict['1'][1]) == True # Positive integers including zero
     assert type(_points_dict(card_dict) == dict) # Check data type
+    pass
 
 def check_points_dict():
     assert points_dict['1'] >=0 # Check positive integer
     assert type(points_dict['1']) == int # Check for integer
+    pass
 
 def test_part_1():
     assert type(part_1(test_data)) == int # Check data type
     assert part_1(test_data) >= 0
     assert part_1(test_data) == expected_result_part_1
+    pass
 
 
 def test_part_2():
@@ -47,3 +52,4 @@ def test_part_2():
     assert type(win_count_dict['1']['copies']) == int
     assert win_count_dict['1']['copies'] >= 0
     assert part_2(test_data) == expected_result_part_2
+    pass
