@@ -1,7 +1,7 @@
 from load_data import get_data,get_test_data
 from itertools import groupby
 import time
-day = '5-7'
+day = '5-1'
 
 """ Part 1 Pseudo code
 1. Separate the text file into different dictionaries for the ranges. First
@@ -17,7 +17,9 @@ Use the tables to find the maps for the inputs
 
 """Part 2 Pseudo code:
 Similar to part 1, but the initial seed list is longer.
-Update _parse_source_data to include an argument to expand seed list
+Update _parse_source_data to include an argument to expand seed list.
+Note: To run this, the actual file needed to be split up so that the process
+could be parallelised. Even then it took about 8 hours to run
 """
 
 def _positive_int(input_list: list) -> bool:
