@@ -1,6 +1,7 @@
 from load_data import get_data,get_test_data
 from itertools import groupby
-day = 5
+import time
+day = '5-7'
 
 """ Part 1 Pseudo code
 1. Separate the text file into different dictionaries for the ranges. First
@@ -65,9 +66,13 @@ def _parse_source_data(data: str, expand_seeds = False) -> dict:
     if expand_seeds:
         new_seed_list = [] # Create a new seed list
         split_list = _split_list(initial_seed_list,2) # Split the seed list
+        start = time.time()
         for data in split_list:
             for seed in range(data[0][1], data[0][1] + data[1][1]):
                 new_seed_list.append(seed)
+        end = time.time()
+
+        print(f"Number of seeds: {len(new_seed_list)}. Time taken: {(end-start)/60}min")
         parsed_dict['seeds'] = new_seed_list
     else:
         parsed_dict['seeds'] = initial_seed_list
@@ -118,6 +123,7 @@ def _final_destination(seed_num: int, parsed_data:dict) -> int:
 
     return _destination(dest_6, parsed_data['humidity-to-location'])
 
+
 def part_1(data:str) -> int:
     """ Takes in the test data then returns the lowest location
     """
@@ -138,15 +144,28 @@ def part_2(data: str) -> int:
     """ Takes in the test data then returns the lowest location
     """
     # Parse the data
+    print('Parsing the data')
     parsed_data = _parse_source_data(data, expand_seeds=True)
 
     # Generate seed list
     seeds = parsed_data['seeds']
-
+    lowest_destination = 100000000000000
     # Generate destition list
-    dest_list = [_final_destination(seed_num, parsed_data) for seed_num in seeds]
+    print('Generating the destinations')
+    start = time.time()
+    # dest_list = [_final_destination(seed_num, parsed_data) for seed_num in seeds]
+    count = 0
+    for seed in seeds:
+        count+=1
+        curr_destination = _final_destination(seed, parsed_data)
+        if count % 1000000 ==0:
+            print(f"{(time.time() - start)/60} mins taken to process {count} seeds")
 
-    return min(dest_list) # Return the minimum value
+        if curr_destination <  lowest_destination:
+            lowest_destination = curr_destination
+    end = time.time()
+    print(f'Generation complete. Time taken: {(end-start/60)}min')
+    return lowest_destination # Return the minimum value
 
 
 
@@ -159,7 +178,7 @@ if __name__ == "__main__":
 
     ## Uncomment the lines below when your function passes the test!
     real_data = get_data(day)
-    print(f'part 1 solution = {part_1(real_data)}')
+    # print(f'part 1 solution = {part_1(real_data)}')
     print(f'part 2 solution = {part_2(real_data)}')
 
 
