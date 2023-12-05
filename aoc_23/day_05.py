@@ -35,12 +35,33 @@ def _parse_source_data(data: str) -> dict:
     {
     'seeds' : [...],
     'seed-to-soil' : [
-        {'dest' : ##, 'source' : ##, 'range' : ##},...
+        {'dest' : ##, 'source' : ##, 'range_len' : ##},...
         ]
     }
     """
+    parsed_dict = {}
+     # split data into vector/list of numbers
+    raw_list = data.strip().split('\n\n')
 
-    pass
+    # Get the seed info
+    parsed_dict['seeds'] = [int(i) for i in raw_list[0].split(':')[1].strip().split()]
+
+    for item in raw_list[1:]:
+        split_item =item.strip().split(' map:')
+        name = split_item[0]
+        parsed_list = []
+        data_list = split_item[1].strip().split('\n')
+
+        for data in data_list:
+            sub_list = [int(i) for i in data.split()]
+            dest = sub_list[0]
+            source = sub_list[1]
+            range_len = sub_list[2]
+            parsed_list.append({ 'dest' : dest, 'source': source, 'range_len': range_len})
+
+        parsed_dict[name] = parsed_list
+
+    return parsed_dict
 
 
 def part_1():
@@ -54,6 +75,7 @@ if __name__ == "__main__":
 
     ## Uncomment the lines below when your function passes the test!
     data = get_test_data(day)
+    _parse_source_data(data)
     # print(f'part 1 solution = {part_1(real_data)}')
     # print(f'part 2 solution = {part_2(real_data)}')
 
