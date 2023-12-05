@@ -44,7 +44,6 @@ def test_part_1():
 
 
 def test_part_2():
-
     assert type(win_count_dict) == dict
     assert len(win_count_dict['1']) == 2
     assert type(win_count_dict['1']['points']) == int

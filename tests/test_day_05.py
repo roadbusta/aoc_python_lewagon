@@ -1,6 +1,5 @@
-from aoc_23.day_05 import _parse_source_data, _positive_int, _destination, part_1, _split_list
+from aoc_23.day_05 import _parse_source_data, _positive_int, _destination, part_1, _split_list, part_2
 from aoc_23.load_data import get_test_data
-import numpy as np
 
 
 test_data = get_test_data(5)
@@ -41,14 +40,13 @@ def test_part_1():
     assert part_1(test_data) == expected_result_part_1
 
 
-
-
-
-
-
-
     pass
 
 
 def test_part_2():
-   pass
+    assert type(test_split_list) == list
+    assert len(test_split_list) == 4
+    assert len(test_split_list[0]) == 2
+
+    assert part_2(test_data) == expected_result_part_2
+    pass

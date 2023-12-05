@@ -1,6 +1,4 @@
 from load_data import get_data,get_test_data
-import re
-import numpy as np
 from itertools import groupby
 day = 5
 
@@ -47,7 +45,6 @@ def _split_list(input_list: list, part_size:int) -> list:
     # Use the zip() function to group the pairs of (index, element) by index
     return [list(group) for index, group in groupby(pairs, lambda x: x[0] // part_size)]
 
-
 def _parse_source_data(data: str, expand_seeds = False) -> dict:
     """ Takes in the raw data and convert this into dictionaries within
     dictionaries with the following structure:
@@ -66,8 +63,12 @@ def _parse_source_data(data: str, expand_seeds = False) -> dict:
     initial_seed_list = [int(i) for i in raw_list[0].split(':')[1].strip().split()]
 
     if expand_seeds:
-
-        pass
+        new_seed_list = [] # Create a new seed list
+        split_list = _split_list(initial_seed_list,2) # Split the seed list
+        for data in split_list:
+            for seed in range(data[0][1], data[0][1] + data[1][1]):
+                new_seed_list.append(seed)
+        parsed_dict['seeds'] = new_seed_list
     else:
         parsed_dict['seeds'] = initial_seed_list
 
@@ -133,22 +134,33 @@ def part_1(data:str) -> int:
     return min(dest_list) # Return the minimum value
 
 
-def part_2():
-    pass
+def part_2(data: str) -> int:
+    """ Takes in the test data then returns the lowest location
+    """
+    # Parse the data
+    parsed_data = _parse_source_data(data, expand_seeds=True)
+
+    # Generate seed list
+    seeds = parsed_data['seeds']
+
+    # Generate destition list
+    dest_list = [_final_destination(seed_num, parsed_data) for seed_num in seeds]
+
+    return min(dest_list) # Return the minimum value
+
 
 
 if __name__ == "__main__":
 
-    data = get_test_data(day)
-    real_data = get_data(day)
-    parsed_data = _parse_source_data(data)
+    # data = get_test_data(day)
+    # parsed_data = _parse_source_data(data, expand_seeds=True)
     # test_mapping_dict = [{'dest' : 50, 'source' : 98, 'range_len' : 2}]
     # _destination(99, test_mapping_dict)
 
     ## Uncomment the lines below when your function passes the test!
     real_data = get_data(day)
-    # print(f'part 1 solution = {part_1(real_data)}')
-    # print(f'part 2 solution = {part_2(real_data)}')
+    print(f'part 1 solution = {part_1(real_data)}')
+    print(f'part 2 solution = {part_2(real_data)}')
 
 
     pass
