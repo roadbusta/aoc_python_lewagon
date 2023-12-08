@@ -8,10 +8,16 @@ day = 8
 
 Note: This method is brute force and takes too long.
 
-Will try a different approach.
+Will try a different approach. - *Update* Error in code was causing the delayed run
 
 1. Find the terminal point achieved if the instructions are followed exactly once
 2. If ZZZ is reached, flag how many steps are taken for it to be reached
+
+Part 2 -
+1. Find all the starting nodes that end in A
+2. Take the next step
+3. Check to see if all the next step is ends in Z. If so stop and record count.
+If not, continue
 """
 def _parse_data(data:str )-> dict:
     """Takes in the data as a string and returns a dictionary with the following structure:
@@ -67,8 +73,13 @@ def _brute_force(data:str) -> dict:
 
     return count
 
-def _find_next_location() -> str:
-    """Takes in instructions, netowrk, start and returns the next location"""
+def _find_next_location(instruction: str, network:dict, current_location:str) -> str:
+    """Takes in instruction, netowrk, current location and returns the next location"""
+    if instruction == 'L':
+        new_location = network[current_location][0]
+    else:
+        new_location = network[current_location][1]
+    return new_location
 
 def _terminal_dict(instructions: str, network:dict, start:str, end_search = False, end: str = 'ZZZ')-> dict:
     """Takes in the instructions, network and starting point and returns a
@@ -102,7 +113,22 @@ def _terminal_dict(instructions: str, network:dict, start:str, end_search = Fals
 
     return terminal_dict
 
+def _start_node_list(network: dict) -> list:
+    """Generate pt2_start nodes as a list"""
+    return [key for key, values in network.items() if key[2] == 'A']
 
+
+def _next_node_list(step:str, network: dict, current_nodes: list) -> list:
+    """Takes in current_nodes as a list and the network nodes as a dict
+    and returns a list of next nodes"""
+    return[ _find_next_location(step, network, node) for node in current_nodes]
+
+
+def _check_node_list(current_nodes: list, check_value='Z') -> int:
+    """Takes in the current nodes as a list and looks to see if the check value
+    is the last letter. If so, it counts, and returns a count
+    """
+    pass
 
 def part_1(data:str) -> dict:
     return _brute_force(data)

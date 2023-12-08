@@ -1,7 +1,5 @@
-from aoc_23.day_08 import _parse_data, part_1, _terminal_dict
+from aoc_23.day_08 import _parse_data, part_1, _terminal_dict, _start_node_list, _next_node_list, _check_node_list
 from aoc_23.load_data import get_test_data
-
-
 
 test_data = get_test_data(8)
 test_data_2 = get_test_data('8-2')
@@ -10,7 +8,12 @@ instructions = data_dict['instructions']
 network = data_dict['network']
 expected_result_part_1a = 2
 expected_result_part_1b = 6
-expected_result_part_2 = None
+
+test_data_3 =get_test_data('8-3')
+data_dict_3 = _parse_data(test_data_3)
+instructions_3 = data_dict_3['instructions']
+network_3 = data_dict_3['network']
+expected_result_part_2 = 6
 
 
 def test_part_1():
@@ -37,4 +40,11 @@ def test_part_1():
 
 
 def test_part_2():
-   pass
+    assert type(_start_node_list(network_3)) == list
+    assert len(_start_node_list(network_3)) == 2
+    assert _start_node_list(network_3)[0] == '11A'
+    assert _start_node_list(network_3)[1] == '22A'
+
+    assert type(_next_node_list('L', network_3, ['11A', '22A'])) == list
+    assert _next_node_list('L', network_3, ['11A', '22A']) == ['11B', '22B']
+    pass
