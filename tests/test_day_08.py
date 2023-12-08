@@ -1,4 +1,4 @@
-from aoc_23.day_08 import _parse_data, part_1, _terminal_dict, _start_node_list, _next_node_list, _check_node_list
+from aoc_23.day_08 import _parse_data, part_1, _terminal_dict, _start_node_list, _next_node_list, _check_node_list, part_2
 from aoc_23.load_data import get_test_data
 
 test_data = get_test_data(8)
@@ -47,4 +47,9 @@ def test_part_2():
 
     assert type(_next_node_list('L', network_3, ['11A', '22A'])) == list
     assert _next_node_list('L', network_3, ['11A', '22A']) == ['11B', '22B']
+    assert type(_check_node_list(['11A', '22B'])) == int
+    assert _check_node_list(['11A', '22B']) == 0
+    assert _check_node_list(['11A', '22Z']) == 1
+
+    assert part_2(test_data_3) == expected_result_part_2
     pass

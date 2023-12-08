@@ -128,28 +128,49 @@ def _check_node_list(current_nodes: list, check_value='Z') -> int:
     """Takes in the current nodes as a list and looks to see if the check value
     is the last letter. If so, it counts, and returns a count
     """
-    pass
+    count = 0
+    for node in current_nodes:
+        if node[2] == 'Z':
+            count += 1
 
-def part_1(data:str) -> dict:
+    return count
+
+def part_1(data:str) -> int:
     return _brute_force(data)
 
-def part_2():
-    pass
+def part_2(data: str) -> int:
+    """Takes in data as a str and returns the number of steps taken to have
+    all parts end in Z"""
+    data_dict = _parse_data(data) # Parse the data
+    instructions = data_dict['instructions']
+    network = data_dict['network']
+    current_nodes = _start_node_list(network)
+    count = 0
 
+    for step in cycle(instructions): # For each step
+        new_nodes = _next_node_list(step, network, current_nodes)
+        count +=1
+        if _check_node_list(new_nodes) == len(new_nodes):
+            break
+        else:
+            current_nodes = new_nodes
+
+    return count
 
 if __name__ == "__main__":
 
     # data = get_test_data(day)
     # _parse_data(data)
-    test_data = get_test_data(8)
+    test_data = get_test_data('8-3')
     # data_dict = _parse_data(test_data)
     # instructions = data_dict['instructions']
     # network = data_dict['network']
     # _terminal_dict(instructions, network, 'DDD', end_search=True)
     # print(part_1(test_data))
+    print(part_2(test_data))
     # Uncomment the lines below when your function passes the test!
     real_data = get_data(day)
-    print(f'part 1 solution = {part_1(real_data)}')
+    # print(f'part 1 solution = {part_1(real_data)}')
     # # # print(f'part 2 solution = {part_2(real_data)}')
 
     # data_dict = _parse_data(real_data)
