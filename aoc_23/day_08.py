@@ -146,12 +146,23 @@ def part_2(data: str) -> int:
     network = data_dict['network']
     current_nodes = _start_node_list(network)
     count = 0
-
+    max_z = 0
+    print(current_nodes)
     for step in cycle(instructions): # For each step
         new_nodes = _next_node_list(step, network, current_nodes)
         count +=1
-        if _check_node_list(new_nodes) == len(new_nodes):
+        z_count = _check_node_list(new_nodes)
+        if count%1000000 == 0:
+            print(count)
+            print(current_nodes)
+            print(max_z)
+
+        if z_count > max_z:
+            max_z = z_count
+
+        if z_count == len(new_nodes):
             break
+
         else:
             current_nodes = new_nodes
 
@@ -161,21 +172,18 @@ if __name__ == "__main__":
 
     # data = get_test_data(day)
     # _parse_data(data)
-    test_data = get_test_data('8-3')
+    # test_data = get_test_data('8-3')
     # data_dict = _parse_data(test_data)
     # instructions = data_dict['instructions']
     # network = data_dict['network']
     # _terminal_dict(instructions, network, 'DDD', end_search=True)
     # print(part_1(test_data))
-    print(part_2(test_data))
+    # print(part_2(test_data))
     # Uncomment the lines below when your function passes the test!
     real_data = get_data(day)
     # print(f'part 1 solution = {part_1(real_data)}')
-    # # # print(f'part 2 solution = {part_2(real_data)}')
+    print(f'part 2 solution = {part_2(real_data)}')
 
-    # data_dict = _parse_data(real_data)
-    # instructions = data_dict['instructions']
-    # network = data_dict['network']
 
 
 
