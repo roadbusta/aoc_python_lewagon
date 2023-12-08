@@ -1,6 +1,7 @@
 from load_data import get_data,get_test_data
 import re
 import numpy as np
+import pandas as pd
 from itertools import chain
 day = 7
 """ Part 1 Pseudocode:
@@ -22,14 +23,14 @@ that it appears in the string
 """
 
 def _hand_dict(hand_str:str) -> dict:
-    """Takes in hand as a string and returns a dictionary of the hand
+    """Takes in hand as a string or list and returns a dictionary of the hand
     """
     hand_dict = {}
     for card in hand_str:
         if str(card) not in hand_dict.keys():
-            hand_dict[card] = 1
+            hand_dict[str(card)] = 1
         else:
-            hand_dict[card] += 1
+            hand_dict[str(card)] += 1
     return hand_dict
 
 def _hand(hand_str: str)->int:
@@ -68,12 +69,210 @@ def _hand(hand_str: str)->int:
             hand = 2
     return hand
 
-def _hand_scorer(hand_str:str)-> int:
-    """ Takes in a hand string and returns that hand's score as an integer
+def _hand_parser(hand_str:str)-> list:
+    """Takes in a string list and converts it into a list of numbers
     """
+    hand_list = [] 
+    face_card_map= {'T': 10, 'J' : 11, 'Q' : 12, 'K' : 13, 'A' : 14}
+    for card in hand_str:
+        if card in face_card_map.keys():
+            hand_list.append(face_card_map[card]) # Replace face card with mapped value
+        else:
+            hand_list.append(int(card)) # Replace with integer version of string
+
+    return hand_list
+
+def _hand_scorer(hand_list:list, hand_type: int)-> int:
+    """
+    Computes score for each hand type
+    """
+    # High Card
+    if hand_type == 0:
+        score_list = hand_list  # Create a hand list 
+
+    # Pair
+    elif hand_type == 1:
+        thresh = 60
+        score_list = []
+        hand_dict = _hand_dict(hand_list)
+        for card in hand_list:
+            if hand_dict[str(card)] == 2:
+                score_list.append(card*thresh)
+            else:
+                score_list.append(card)
     
-    pass
-def part_1():
+
+    # Two Pair
+    elif hand_type == 2:
+        thresh = 180
+        score_list = []
+        hand_dict = _hand_dict(hand_list)
+        for card in hand_list:
+            if hand_dict[str(card)] == 2:
+                score_list.append(card*thresh)
+            else:
+                score_list.append(card)
+
+
+    # Three of a kind
+    elif hand_type == 3:
+        thresh = 1800
+        score_list = []
+        hand_dict = _hand_dict(hand_list)
+        for card in hand_list:
+            if hand_dict[str(card)] == 3:
+                score_list.append(card*thresh)
+            else:
+                score_list.append(card)
+
+
+    #Full house
+    elif hand_type == 4:
+        thresh = 7000
+        score_list = []
+        hand_dict = _hand_dict(hand_list)
+        for card in hand_list:
+            if hand_dict[str(card)] != 1:
+                score_list.append(card*thresh)
+            else:
+                score_list.append(card)
+
+
+    #4 of a kind
+    elif hand_type == 5:
+        thresh = 60000
+        score_list = []
+        hand_dict = _hand_dict(hand_list)
+        for card in hand_list:
+            if hand_dict[str(card)] != 1:
+                score_list.append(card*thresh)
+            else:
+                score_list.append(card)
+    
+     #5 of a kind
+    elif hand_type == 6:
+        thresh = 400000
+        score_list = []
+        hand_dict = _hand_dict(hand_list)
+        for card in hand_list:
+            score_list.append(card*thresh)
+           
+    
+    return sum(score_list)
+
+def _game_dict(data:str) -> dict:
+    """Takes in a string and returns a dictionary containing the hand and bet
+    """
+    raw_list = data.strip().split('\n')
+
+    # Create a game dictionary
+    game_dict = {}
+    for line in raw_list:
+        game_info = line.strip().split(' ')
+        hand = game_info[0]
+        bet = game_info[1]
+        game_dict[hand] = bet
+
+    return game_dict
+
+def _game_df(data:str) -> dict:
+    """Takes in a string and returns a dataframe containing the hand and bet
+    """
+    raw_list = data.strip().split('\n')
+
+    # Create a game dictionary
+    hand_col = []
+    bet_col = []
+    for line in raw_list:
+        game_info = line.strip().split(' ')
+        hand_col.append(game_info[0])
+        bet_col.append(int(game_info[1]))
+
+    game_data = { 'hand' : hand_col, 'bet': bet_col}
+
+    return pd.DataFrame.from_dict(game_data) 
+
+def _hand_alpha(hand_str: str) -> str:
+    """
+    Take in the original hand_str and return the alpha string
+    """
+    hand_map = {'2' : 'a', 
+                '3' : 'b', 
+                '4' : 'c', 
+                '5' : 'd',
+                '6' : 'e',
+                '7' : 'f',
+                '8' : 'g',
+                '9' : 'h',
+                'T' : 'i', 
+                'J' : 'j',
+                'Q' : 'k',
+                'K' : 'l',
+                'A' : 'm'}
+    hand_alpha = ''
+    for card in hand_str:
+        hand_alpha += (hand_map[card])
+
+    return hand_alpha.strip()
+
+def part_1(data:str) ->int:
+    """Takes in data as a string and returns a dataframe
+    """
+    # Create an initial game dataframe
+    game_df = _game_df(data)
+
+    # Create column of hand types
+    game_df['hand_type'] = game_df['hand'].map(lambda x: _hand(x))
+
+    # Create a column of converted hand types
+    game_df['hand_alpha'] = game_df['hand'].map(lambda x : _hand_alpha(x))
+
+    # Sort the df by hand type
+    game_df = game_df.sort_values(by = ['hand_type', 'hand_alpha'], ignore_index = True)
+
+    # Create a column ranking
+    game_df['index'] = range(len(game_df))
+    game_df['rank'] = game_df.copy()['index'] + 1
+
+    # Create winnings column
+    game_df['winnings'] = game_df.copy()['bet'] * game_df.copy()['rank']
+    
+    return game_df['winnings'].sum()
+
+# def part_1(data: str)-> int:
+#     """Takes in the data as a string and returns total winnings
+#     """
+#     # Create game dictionary
+#     game_dict = _game_dict(data)
+#     score_dict = {} # Create an empty score dictionary
+
+#     # Create the score dictionary
+#     for hand_str, bet in game_dict.items():
+#         hand_list = _hand_parser(hand_str)
+#         hand_type = _hand(hand_str)
+#         score_dict[hand_str] = _hand_scorer(hand_list,hand_type)
+    
+#     # Sort the dictionary 
+#     sorted_hands = {k: v for k, v in sorted(score_dict.items(), key=lambda x: x[1], reverse = False)}
+
+#     # Create ranked dictionary
+#     ranked_hands = {}
+#     for i in range(len(sorted_hands)):
+#         ranked_hands[list(sorted_hands.keys())[i]] = i+1
+
+#     final_score = 0
+#     for hand, bet in game_dict.items():
+#         print(f'{hand}: {ranked_hands[hand]} * {bet}')
+#         # print(bet)
+#         # print(ranked_hands[hand])
+#         final_score += int(bet) * ranked_hands[hand]
+
+        
+#     print(score_dict)
+#     # print(sorted_hands)
+#     # print(ranked_hands)
+#     print(final_score)
+
     pass
 
 def part_2():
@@ -84,8 +283,10 @@ if __name__ == "__main__":
 
     ## Uncomment the lines below when your function passes the test!
     data = get_test_data(day)
-    print(_hand('22223'))
-    # print(f'part 1 solution = {part_1(real_data)}')
+
+    # print(part_1(data))
+    real_data = get_data(day)
+    print(f'part 1 solution = {part_1(real_data)}')
     # print(f'part 2 solution = {part_2(real_data)}')
 
 
