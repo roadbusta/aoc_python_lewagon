@@ -21,6 +21,18 @@ that it appears in the string
 3. Apply weighting factor based on type of hand and calculate score
 """
 
+def _hand_dict_check(hand_str:str) -> dict:
+    """Takes in hand as a string and returns the higest value in the dictionary
+    of occurances
+    """
+    hand_dict = {}
+    for card in hand_str:
+        if str(card) not in hand_dict.keys():
+            hand_dict[card] = 1
+        else:
+            hand_dict[card] += 1
+    return max(hand_dict.values())
+
 def _hand(hand_str: str)->int:
     """Takes in a 5 letter string and returns the hand as per the following code:
     0: HighCard
@@ -44,17 +56,17 @@ def _hand(hand_str: str)->int:
 
     # Check for four-of-a-kind vs full house
     elif len (check_set) == 2:
-        hand_dict = {}
-        for card in hand_str:
-            if str(card) not in hand_dict.keys():
-                hand_dict[card] = 1
-            else:
-                hand_dict[card] += 1
-        if max(hand_dict.values()) == 4:
-            hand = 5
+        if _hand_dict_check(hand_str) == 4:
+            hand = 5 
         else:
             hand = 4
 
+    # Check for three-of-a-kind vs two-pair
+    elif len (check_set) == 3:
+        if _hand_dict_check(hand_str) == 3:
+            hand = 3
+        else:
+            hand = 2
     return hand
 
 

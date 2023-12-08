@@ -13,8 +13,8 @@ def test_part_1():
     assert type(test_data) == str
     assert _hand('23456') == 0
     assert _hand('22345') == 1
-    # assert _hand('22334') == 2
-    # assert _hand('22234') == 3
+    assert _hand('22334') == 2
+    assert _hand('22234') == 3
     assert _hand('22233') == 4
     assert _hand('22223') == 5
     assert _hand('22222') == 6
