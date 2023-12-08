@@ -33,6 +33,28 @@ def _hand_dict(hand_str:str) -> dict:
             hand_dict[str(card)] += 1
     return hand_dict
 
+def _sort_dict_val(original_dict:dict) -> dict:
+    """ Takes in a dictionary and returns it sorted by value
+    """
+    return {k: v for k, v in sorted(original_dict.items(), key=lambda x: x[1])}
+
+def _wildcard(original_hand_str: str) -> int:
+    """Takes in original hand and returns the updated hand taking into account the wild card
+    """
+    modified_hand = original_hand_str
+
+    hand_dict=_sort_dict_val(_hand_dict(original_hand_str))
+    if 'J' in hand_dict.keys():
+        if hand_dict['J'] ==5:
+            modified_hand = original_hand_str
+        else:
+            del hand_dict['J'] # Delete J from the dictionary
+            j_wild = list(hand_dict.keys())[-1] # j wild will now be the most represented letter
+    
+            modified_hand = original_hand_str.replace('J', j_wild)
+
+    return modified_hand
+
 def _hand(hand_str: str)->int:
     """Takes in a 5 letter string and returns the hand as per the following code:
     0: HighCard
@@ -215,6 +237,29 @@ def _hand_alpha(hand_str: str) -> str:
 
     return hand_alpha.strip()
 
+def _hand_alpha_2(hand_str: str) -> str:
+    """
+    Take in the original hand_str and return the alpha string
+    """
+    hand_map = {'J' : 'a', 
+                '2' : 'b', 
+                '3' : 'c', 
+                '4' : 'd',
+                '5' : 'e',
+                '6' : 'f',
+                '7' : 'g',
+                '8' : 'h',
+                '9' : 'i', 
+                'T' : 'j',
+                'Q' : 'k',
+                'K' : 'l',
+                'A' : 'm'}
+    hand_alpha = ''
+    for card in hand_str:
+        hand_alpha += (hand_map[card])
+
+    return hand_alpha.strip()
+
 def part_1(data:str) ->int:
     """Takes in data as a string and returns a dataframe
     """
@@ -236,58 +281,46 @@ def part_1(data:str) ->int:
 
     # Create winnings column
     game_df['winnings'] = game_df.copy()['bet'] * game_df.copy()['rank']
-    
+
     return game_df['winnings'].sum()
 
-# def part_1(data: str)-> int:
-#     """Takes in the data as a string and returns total winnings
-#     """
-#     # Create game dictionary
-#     game_dict = _game_dict(data)
-#     score_dict = {} # Create an empty score dictionary
+def part_2(data:str):
+    """Takes in data as a string and returns a dataframe
+    """
+    # Create an initial game dataframe
+    game_df = _game_df(data)
 
-#     # Create the score dictionary
-#     for hand_str, bet in game_dict.items():
-#         hand_list = _hand_parser(hand_str)
-#         hand_type = _hand(hand_str)
-#         score_dict[hand_str] = _hand_scorer(hand_list,hand_type)
+    # Create column of hand types
+    game_df['hand_type'] = game_df['hand'].map(lambda x: _hand(_wildcard(x)))
+
+    # Create wild column
+    game_df['wild'] = game_df['hand'].map(lambda x: _wildcard(x))
+
+    # Create a column of converted hand types using the updated hand type
+    game_df['hand_alpha'] = game_df['hand'].map(lambda x : _hand_alpha_2(x))
+
+    # Sort the df by hand type
+    game_df = game_df.sort_values(by = ['hand_type', 'hand_alpha'], ignore_index = True)
+
+    # Create a column ranking
+    game_df['index'] = range(len(game_df))
+    game_df['rank'] = game_df.copy()['index'] + 1
+
+    # Create winnings column
+    game_df['winnings'] = game_df.copy()['bet'] * game_df.copy()['rank']
     
-#     # Sort the dictionary 
-#     sorted_hands = {k: v for k, v in sorted(score_dict.items(), key=lambda x: x[1], reverse = False)}
-
-#     # Create ranked dictionary
-#     ranked_hands = {}
-#     for i in range(len(sorted_hands)):
-#         ranked_hands[list(sorted_hands.keys())[i]] = i+1
-
-#     final_score = 0
-#     for hand, bet in game_dict.items():
-#         print(f'{hand}: {ranked_hands[hand]} * {bet}')
-#         # print(bet)
-#         # print(ranked_hands[hand])
-#         final_score += int(bet) * ranked_hands[hand]
-
-        
-#     print(score_dict)
-#     # print(sorted_hands)
-#     # print(ranked_hands)
-#     print(final_score)
-
-    pass
-
-def part_2():
-    pass
+    return game_df['winnings'].sum()
 
 
 if __name__ == "__main__":
 
-    ## Uncomment the lines below when your function passes the test!
     data = get_test_data(day)
+    # print(part_2(data))
 
-    # print(part_1(data))
+    # ## Uncomment the lines below when your function passes the test!
     real_data = get_data(day)
     print(f'part 1 solution = {part_1(real_data)}')
-    # print(f'part 2 solution = {part_2(real_data)}')
+    print(f'part 2 solution = {part_2(real_data)}')
 
 
     pass

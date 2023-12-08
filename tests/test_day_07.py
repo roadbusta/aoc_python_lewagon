@@ -1,4 +1,4 @@
-from aoc_23.day_07 import _hand, _hand_scorer, _hand_parser, _game_dict, part_1
+from aoc_23.day_07 import _hand, _hand_scorer, _hand_parser, _game_dict, part_1, _wildcard
 from aoc_23.load_data import get_test_data
 import numpy as np
 
@@ -38,4 +38,5 @@ def test_part_1():
 
 
 def test_part_2():
+   _wildcard
    pass
