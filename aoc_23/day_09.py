@@ -3,6 +3,14 @@ import re
 import numpy as np
 from itertools import chain
 day = 'xx'
+""" Day_09 Pseudocode
+Step 1:
+1. Write code that converts a string array into a matrix
+2. Write code that pads the matrix with .
+3. Write code that for a given character, returns the connections
+
+
+"""
 
 def part_1():
     pass
