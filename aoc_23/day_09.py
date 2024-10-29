@@ -8,9 +8,13 @@ import time
 
 day = '9'
 """ Day_09 Pseudocode
-Step 1:
+Part 1:
 1. Write code that converts a string into a list
 2. Write code that generates a subsequent list of values with differences
+
+Part 2:
+1. Write code that can extrapolate using history and the first number in the list
+2. Work it backwards
 
 
 
